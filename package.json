@@ -1,0 +1,20 @@
+{
+  "name": "domainvariations",
+  "version": "1.0.0",
+  "description": "Generate domain variations for typosquatting and brand monitoring",
+  "main": "./index.cjs",
+  "module": "./index.mjs",
+  "exports": {
+    "require": "./index.cjs",
+    "import": "./index.mjs"
+  },
+  "keywords": [
+    "domain",
+    "typosquatting",
+    "security",
+    "dns",
+    "phishing"
+  ],
+  "author": "André Ribas",
+  "license": "MIT"
+}
