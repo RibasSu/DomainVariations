@@ -1,3 +1,3 @@
 import DomainVariations from "domainvariations";
-const gen = new DomainVariations();
-console.log(gen.generate("google.com"));
+const dv = new DomainVariations();
+console.log(dv.generate("google.com"));

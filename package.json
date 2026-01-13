@@ -1,6 +1,6 @@
 {
   "name": "domainvariations",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Generate domain variations for typosquatting and brand monitoring",
   "main": "./index.cjs",
   "module": "./index.mjs",
@@ -16,5 +16,13 @@
     "phishing"
   ],
   "author": "André Ribas",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RibasSu/DomainVariations.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RibasSu/DomainVariations/issues"
+  },
+  "homepage": "https://github.com/RibasSu/DomainVariations"
 }
