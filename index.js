@@ -1,6 +1,6 @@
 class DomainVariations {
   constructor(options = {}) {
-    this.teclado = options.teclado || {
+    this.keyboard = options.keyboard || {
       q: ["w", "a"],
       w: ["q", "e", "a", "s"],
       e: ["w", "r", "s", "d"],
@@ -38,76 +38,72 @@ class DomainVariations {
       s: ["5"],
     };
 
-    this.tldsParecidos = options.tldsParecidos || {
+    this.similarTlds = options.similarTlds || {
       com: ["co", "net", "org", "io", "ai"],
       net: ["ne", "com"],
       org: ["ong", "com"],
       "com.br": ["com"],
     };
 
-    this.prefixos = options.prefixos || ["my", "the"];
-    this.sufixos = options.sufixos || ["search"];
+    this.prefixes = options.prefixes || ["my", "the"];
+    this.suffixes = options.suffixes || ["search"];
   }
 
-  parseDominio(dominio) {
-    const partes = dominio.split(".");
-    return {
-      nome: partes[0],
-      tld: partes.slice(1).join("."),
-    };
+  parseDomain(domain) {
+    const parts = domain.split(".");
+    return { name: parts[0], tld: parts.slice(1).join(".") };
   }
 
-  gerar(dominio) {
-    const { nome, tld } = this.parseDominio(dominio);
-    const resultados = new Set();
+  generate(domain) {
+    const { name, tld } = this.parseDomain(domain);
+    const results = new Set();
 
-    for (let i = 0; i < nome.length; i++) {
-      const c = nome[i];
+    for (let i = 0; i < name.length; i++) {
+      const c = name[i];
       if (this.visual[c]) {
         this.visual[c].forEach((v) => {
-          resultados.add(nome.slice(0, i) + v + nome.slice(i + 1) + "." + tld);
+          results.add(name.slice(0, i) + v + name.slice(i + 1) + "." + tld);
         });
       }
     }
 
-    for (let i = 0; i < nome.length; i++) {
-      resultados.add(nome.slice(0, i) + nome.slice(i + 1) + "." + tld);
+    for (let i = 0; i < name.length; i++) {
+      results.add(name.slice(0, i) + name.slice(i + 1) + "." + tld);
+      results.add(name.slice(0, i) + name[i] + name.slice(i) + "." + tld);
     }
 
-    for (let i = 0; i < nome.length; i++) {
-      resultados.add(nome.slice(0, i) + nome[i] + nome.slice(i) + "." + tld);
-    }
-
-    for (let i = 0; i < nome.length - 1; i++) {
-      resultados.add(
-        nome.slice(0, i) + nome[i + 1] + nome[i] + nome.slice(i + 2) + "." + tld
+    for (let i = 0; i < name.length - 1; i++) {
+      results.add(
+        name.slice(0, i) + name[i + 1] + name[i] + name.slice(i + 2) + "." + tld
       );
     }
 
-    for (let i = 0; i < nome.length; i++) {
-      const c = nome[i];
-      if (this.teclado[c]) {
-        this.teclado[c].forEach((v) => {
-          resultados.add(nome.slice(0, i) + v + nome.slice(i + 1) + "." + tld);
+    for (let i = 0; i < name.length; i++) {
+      const c = name[i];
+      if (this.keyboard[c]) {
+        this.keyboard[c].forEach((v) => {
+          results.add(name.slice(0, i) + v + name.slice(i + 1) + "." + tld);
         });
       }
     }
 
-    if (this.tldsParecidos[tld]) {
-      this.tldsParecidos[tld].forEach((novo) => {
-        resultados.add(nome + "." + novo);
+    if (this.similarTlds[tld]) {
+      this.similarTlds[tld].forEach((newTld) => {
+        results.add(name + "." + newTld);
       });
     }
 
-    this.prefixos.forEach((p) => {
-      resultados.add(p + nome + "." + tld);
+    this.prefixes.forEach((p) => {
+      results.add(p + name + "." + tld);
     });
 
-    this.sufixos.forEach((s) => {
-      resultados.add(nome + "-" + s + "." + tld);
+    this.suffixes.forEach((s) => {
+      results.add(name + "-" + s + "." + tld);
     });
 
-    return Array.from(resultados).sort();
+    results.delete(domain);
+
+    return Array.from(results).sort();
   }
 }
 
